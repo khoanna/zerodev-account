@@ -1,13 +1,9 @@
 import "dotenv/config";
-import {
-  createKernelAccount,
-  createKernelAccountClient,
-} from "@zerodev/sdk";
+import {createKernelAccount, createKernelAccountClient} from "@zerodev/sdk";
 import {signerToEcdsaValidator} from "@zerodev/ecdsa-validator";
 import {http, zeroAddress} from "viem";
 import {sepolia} from "viem/chains";
 import {signer, entryPoint, kernelVersion, publicClient, paymasterClient} from "../config/index.ts";
-
 
 const main = async () => {
   // === Create ECDSA Validator Plugin ===
@@ -23,7 +19,7 @@ const main = async () => {
       sudo: ecdsaValidator,
     },
     entryPoint,
-    kernelVersion
+    kernelVersion,
   });
 
   // === Create Kernel Account Client ===
@@ -49,14 +45,9 @@ const main = async () => {
       },
     ]),
   });
-  console.log("userOp hash:", userOpHash);
+
   const _receipt = await kernelClient.waitForUserOperationReceipt({
     hash: userOpHash,
   });
-  console.log("bundle txn hash: ", _receipt.receipt.transactionHash);
-  console.log("userOp completed");
 
-  process.exit(0);
 };
-
-main()
