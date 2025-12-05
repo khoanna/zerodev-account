@@ -1,5 +1,6 @@
 import "dotenv/config";
 import {
+  createFallbackKernelAccountClient,
   createKernelAccount,
   createKernelAccountClient,
 } from "@zerodev/sdk";
@@ -7,7 +8,6 @@ import {signerToEcdsaValidator} from "@zerodev/ecdsa-validator";
 import {http, zeroAddress} from "viem";
 import {sepolia} from "viem/chains";
 import {signer, entryPoint, kernelVersion, publicClient, paymasterClient} from "../config/index.ts";
-
 
 const main = async () => {
   // === Create ECDSA Validator Plugin ===
@@ -23,21 +23,28 @@ const main = async () => {
       sudo: ecdsaValidator,
     },
     entryPoint,
-    kernelVersion
+    kernelVersion,
   });
 
   // === Create Kernel Account Client ===
-  const kernelClient = createKernelAccountClient({
+  const kernelClientAlchemy = createKernelAccountClient({
     account,
     chain: sepolia,
-    bundlerTransport: http(process.env.ZERODEV_RPC),
+    bundlerTransport: http(`${process.env.ZERODEV_RPC}?provider=ALCHEMY`),
     client: publicClient,
-    paymaster: {
-      getPaymasterData(userOperation) {
-        return paymasterClient.sponsorUserOperation({userOperation});
-      },
-    },
   });
+
+  const kernelClientPimlico = createKernelAccountClient({
+    account,
+    chain: sepolia,
+    bundlerTransport: http(`${process.env.ZERODEV_RPC}?provider=PIMLICO`),
+    client: publicClient,
+  });
+
+  const kernelClient = createFallbackKernelAccountClient([
+    kernelClientAlchemy,
+    kernelClientPimlico,
+  ]);
 
   // === Send User Operation ===
   const userOpHash = await kernelClient.sendUserOperation({
@@ -49,6 +56,7 @@ const main = async () => {
       },
     ]),
   });
+  
   console.log("userOp hash:", userOpHash);
   const _receipt = await kernelClient.waitForUserOperationReceipt({
     hash: userOpHash,
@@ -57,4 +65,4 @@ const main = async () => {
   console.log("userOp completed");
 };
 
-main()
+main();

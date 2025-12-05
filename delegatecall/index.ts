@@ -47,7 +47,7 @@ const main = async () => {
         value: BigInt(0),
         data: "0x",
       },
-    ]),
+    ], "delegatecall"),
   });
   console.log("userOp hash:", userOpHash);
   const _receipt = await kernelClient.waitForUserOperationReceipt({

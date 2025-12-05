@@ -18,6 +18,8 @@ if (!process.env.PRIVATE_KEY) {
 
 const signer = privateKeyToAccount(process.env.PRIVATE_KEY as Hex);
 
+const guardianSigner = privateKeyToAccount(process.env.GUARDIAN_KEY as Hex);
+ 
 const entryPoint = getEntryPoint("0.7");
 
 const kernelVersion = KERNEL_V3_1;
@@ -43,4 +45,4 @@ const identifierEmittedAbi = parseAbi([
   "event IdentifierEmitted(bytes id, address indexed kernel)",
 ])
 
-export {signer, entryPoint, kernelVersion, publicClient, paymasterClient, erc20PaymasterClient, identifierEmittedAbi};
+export {signer, guardianSigner, entryPoint, kernelVersion, publicClient, paymasterClient, erc20PaymasterClient, identifierEmittedAbi};
