@@ -1,17 +1,12 @@
 import "dotenv/config";
 import {
   createZeroDevPaymasterClient,
-  createKernelAccount,
-  createKernelAccountClient,
 } from "@zerodev/sdk";
-import {http, createPublicClient} from "viem";
+import {http, createPublicClient, parseAbi} from "viem";
 import {privateKeyToAccount} from "viem/accounts";
 import {sepolia} from "viem/chains";
 import {getEntryPoint, KERNEL_V3_1} from "@zerodev/sdk/constants";
-import {signerToEcdsaValidator} from "@zerodev/ecdsa-validator";
-import {GetKernelVersion} from "@zerodev/sdk/types";
-import {EntryPointVersion} from "viem/account-abstraction";
-import type {Hex, Client, Chain, Transport, Account} from "viem";
+import type {Hex, Chain, Account} from "viem";
 
 if (!process.env.ZERODEV_RPC) {
   throw new Error("ZERODEV_RPC is not set");
@@ -35,7 +30,17 @@ const publicClient = createPublicClient({
 // Deposit fund to your paymaster at dashboard.zerodev.app for sponsoring user operations
 const paymasterClient = createZeroDevPaymasterClient({
   chain: sepolia,
-  transport: http(process.env.ZERODEV_RPC),
+  transport: http(`${process.env.ZERODEV_RPC}?selfFunded=true`),
 });
 
-export {signer, entryPoint, kernelVersion, publicClient, paymasterClient};
+// Deposit fund to your paymaster at dashboard.zerodev.app for sponsoring user operations
+const erc20PaymasterClient = createZeroDevPaymasterClient({
+  chain: sepolia,
+  transport: http(`${process.env.ZERODEV_RPC}?selfFunded=true`),
+});
+
+const identifierEmittedAbi = parseAbi([
+  "event IdentifierEmitted(bytes id, address indexed kernel)",
+])
+
+export {signer, entryPoint, kernelVersion, publicClient, paymasterClient, erc20PaymasterClient, identifierEmittedAbi};
