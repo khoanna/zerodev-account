@@ -32,13 +32,13 @@ const publicClient = createPublicClient({
 // Deposit fund to your paymaster at dashboard.zerodev.app for sponsoring user operations
 const paymasterClient = createZeroDevPaymasterClient({
   chain: sepolia,
-  transport: http(`${process.env.ZERODEV_RPC}?selfFunded=true`),
+  transport: http(`${process.env.ZERODEV_RPC}/chain/11155111?selfFunded=true`),
 });
 
 // Deposit fund to your paymaster at dashboard.zerodev.app for sponsoring user operations
 const erc20PaymasterClient = createZeroDevPaymasterClient({
   chain: sepolia,
-  transport: http(`${process.env.ZERODEV_RPC}?selfFunded=true`),
+  transport: http(`${process.env.ZERODEV_RPC}/chain/11155111?selfFunded=true`),
 });
 
 const identifierEmittedAbi = parseAbi([

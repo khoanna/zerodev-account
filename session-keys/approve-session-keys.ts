@@ -10,9 +10,9 @@ import { sudoPolicy } from "./policy";
 // === OWNER ===
 export async function approveSessionKey(sessionKeyAddress: `0x${string}`) {
   const ecdsaValidator = await signerToEcdsaValidator(publicClient, {
+    signer,
     entryPoint,
     kernelVersion,
-    signer,
   });
 
   const emptyAccount = addressToEmptyAccount(sessionKeyAddress);

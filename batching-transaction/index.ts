@@ -1,10 +1,10 @@
 import "dotenv/config";
-import {createKernelAccount, createKernelAccountClient} from "@zerodev/sdk";
-import {signerToEcdsaValidator} from "@zerodev/ecdsa-validator";
-import {http} from "viem";
-import {sepolia} from "viem/chains";
-import {signer, entryPoint, kernelVersion, publicClient, paymasterClient} from "../config/index.ts";
-import {EXEC_TYPE} from "@zerodev/sdk/constants";
+import { createKernelAccount, createKernelAccountClient } from "@zerodev/sdk";
+import { signerToEcdsaValidator } from "@zerodev/ecdsa-validator";
+import { http } from "viem";
+import { sepolia } from "viem/chains";
+import { signer, entryPoint, kernelVersion, publicClient, paymasterClient } from "../config/index.ts";
+import { EXEC_TYPE } from "@zerodev/sdk/constants";
 
 const main = async () => {
   // === Create ECDSA Validator Plugin ===
@@ -12,9 +12,7 @@ const main = async () => {
     signer,
     entryPoint,
     kernelVersion,
-  });
-
-  // === Create Kernel Account ===
+  }); // === Create Kernel Account ===
   const account = await createKernelAccount(publicClient, {
     plugins: {
       sudo: ecdsaValidator,
@@ -49,18 +47,22 @@ const main = async () => {
 
   // === Send Batch Operation ===
   const userOpHash = await kernelClient.sendUserOperation({
-    callData: await account.encodeCalls([
-      {
-        to: "0xADDRESS",
-        value: BigInt(0),
-        data: "0xDATA",
-      },
-      {
-        to: "0xADDRESS",
-        value: BigInt(0),
-        data: "0xDATA",
-      },
-    ], "call", EXEC_TYPE.TRY_EXEC),
+    callData: await account.encodeCalls(
+      [
+        {
+          to: "0xADDRESS",
+          value: BigInt(0),
+          data: "0xDATA",
+        },
+        {
+          to: "0xADDRESS",
+          value: BigInt(0),
+          data: "0xDATA",
+        },
+      ],
+      "call",
+      EXEC_TYPE.TRY_EXEC
+    ),
   });
 };
 
