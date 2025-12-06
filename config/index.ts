@@ -1,7 +1,5 @@
 import "dotenv/config";
-import {
-  createZeroDevPaymasterClient,
-} from "@zerodev/sdk";
+import {createZeroDevPaymasterClient} from "@zerodev/sdk";
 import {http, createPublicClient, parseAbi} from "viem";
 import {privateKeyToAccount} from "viem/accounts";
 import {sepolia} from "viem/chains";
@@ -17,9 +15,10 @@ if (!process.env.PRIVATE_KEY) {
 }
 
 const signer = privateKeyToAccount(process.env.PRIVATE_KEY as Hex);
+const signer2 = privateKeyToAccount(process.env.SUB_PRIVATE_KEY as `0x${string}`);
 
 const guardianSigner = privateKeyToAccount(process.env.GUARDIAN_KEY as Hex);
- 
+
 const entryPoint = getEntryPoint("0.7");
 
 const kernelVersion = KERNEL_V3_1;
@@ -43,6 +42,16 @@ const erc20PaymasterClient = createZeroDevPaymasterClient({
 
 const identifierEmittedAbi = parseAbi([
   "event IdentifierEmitted(bytes id, address indexed kernel)",
-])
+]);
 
-export {signer, guardianSigner, entryPoint, kernelVersion, publicClient, paymasterClient, erc20PaymasterClient, identifierEmittedAbi};
+export {
+  signer,
+  guardianSigner,
+  entryPoint,
+  kernelVersion,
+  publicClient,
+  paymasterClient,
+  erc20PaymasterClient,
+  identifierEmittedAbi,
+  signer2
+};

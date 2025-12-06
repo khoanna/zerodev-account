@@ -20,7 +20,7 @@ import {getValidatorAddress} from "@zerodev/ecdsa-validator";
 import {privateKeyToAccount} from "viem/accounts";
 
 const main = async () => {
-  const newSigner = privateKeyToAccount(process.env.NEW_PRIVATE_KEY as Hex);
+  const newSigner = privateKeyToAccount(process.env.SUB_PRIVATE_KEY as Hex);
 
   // === Create ECDSA Validator Plugin ===
   const ecdsaValidator = await signerToEcdsaValidator(publicClient, {

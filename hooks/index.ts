@@ -42,7 +42,7 @@ const main = async () => {
       sudo: ecdsaValidator,
       regular: permissoinPlugin,
       hook: spendingLimitHook,
-    },
+    }
   });
 
   const kernelClient = createKernelAccountClient({
