@@ -8,7 +8,7 @@ import {sepolia} from "viem/chains";
 import { sudoPolicy } from "./policy";
 
 // === OWNER ===
-export async function approveSessionKey(sessionKeyAddress: `0x${string}`) {
+export async function approveSessionKey(sessionKeyAddress: `0x${string}`) : Promise<string> {
   const ecdsaValidator = await signerToEcdsaValidator(publicClient, {
     signer,
     entryPoint,

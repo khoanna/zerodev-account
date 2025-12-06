@@ -55,7 +55,7 @@ const main = async () => {
     account,
     chain: sepolia,
     bundlerTransport: http(process.env.ZERODEV_RPC),
-    client: publicClient
+    client: publicClient,
   });
 
   // === Recovery ===

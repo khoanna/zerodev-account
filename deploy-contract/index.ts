@@ -42,6 +42,7 @@ async function main() {
     callData: await kernelClient.account.encodeDeployCallData({
       abi: GreeterAbi,
       bytecode: GreeterBytecode,
+      args: ["Hello, ZeroDev!"],
     }),
   });
 
